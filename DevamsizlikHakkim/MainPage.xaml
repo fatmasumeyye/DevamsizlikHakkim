@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--ana sayfa-->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DevamsizlikHakkim.MainPage"
+             BackgroundColor="#F8BBD0">
+    <!--arka plan rengi-->
+
+    <ScrollView>
+        <VerticalStackLayout>
+            <!--ana başlık-->
+            <Label
+                    Text="Devamsızlık Hakkım"
+                    TextColor="#910623"
+                    FontSize="35"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center"
+                />
+
+            <!--ana başlığın açıklaması-->
+            <Label
+                    Text="Derslerini takip et, sınırlarını aşma"
+                    TextColor="#910623"
+                    FontSize="15"
+                    HorizontalOptions="Center"
+                    FontAttributes="Italic"
+                
+                />
+
+            <!--bilgilendirme kartı üçlü-->
+            <Border
+                    Margin="15,15,15,10"
+                    HeightRequest="120"
+                    BackgroundColor="White"
+                    StrokeShape="RoundRectangle 20">
+                <Grid
+                        ColumnDefinitions="*,*,*">
+                    <!--3'lü grid oluşturur-->
+
+                    <!--karttaki ilk sütun-->
+                    <VerticalStackLayout 
+                            Grid.Column="0"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Spacing="5">
+
+                        <!--kitap ikonu eklendi-->
+                        <Image
+                                Source="kitap.png"
+                                WidthRequest="25"
+                                HeightRequest="25"
+                                HorizontalOptions="Center"
+                            />
+
+                        <Label
+                                x:Name="ToplamDers"  
+                                TextColor="Black"
+                                FontSize="20"
+                  
+                                Text="0"
+                                HorizontalOptions="Center"
+                            />
+                        <Label
+                                Text="Toplam ders"  
+                                TextColor="#910623"
+                                FontSize="20"
+                       
+                            />
+                    </VerticalStackLayout>
+
+                    <!--karttaki ikinci sütun-->
+                    <VerticalStackLayout 
+                            Grid.Column="1"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Spacing="5">
+
+                        <!--tick ikonu eklendi-->
+                        <Image
+                                Source="guvenli.png"
+                                WidthRequest="25"
+                                HeightRequest="25"
+                                HorizontalOptions="Center"
+                            />
+
+                        <Label
+                                x:Name="Guvenli"  
+                                TextColor="Black"
+                                FontSize="20"
+                     
+                                Text="0"
+                                HorizontalOptions="Center"
+                            />
+                        <Label
+                                Text="Güvenli"  
+                                TextColor="#910623"
+                                FontSize="20"
+                       
+                            />
+
+                    </VerticalStackLayout>
+
+                    <!--karttaki üçüncü sütun-->
+                    <VerticalStackLayout
+                            Grid.Column="2"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Spacing="5">
+
+                        <!--uyarı ikonu eklendi-->
+                        <Image
+                                Source="dikkat.png"
+                                WidthRequest="25"
+                                HeightRequest="25"
+                                HorizontalOptions="Center"
+                            />
+
+                        <Label
+                                    x:Name="Dikkat"  
+                                    TextColor="Black"
+                                    FontSize="20"
+                             
+                                    Text="0"
+                                    HorizontalOptions="Center"
+                                />
+                        <Label
+                                    Text="Dikkat"  
+                                    TextColor="#910623"
+                                    FontSize="20"
+                          
+                                />
+
+                    </VerticalStackLayout>
+
+                    <!--karttaki sütunları ayıran ilk diket çizgi-->
+                    <BoxView
+                            Grid.Column="0"
+                            WidthRequest="1"
+                            HeightRequest="80"
+                            Color="#F3D6E2"
+                            HorizontalOptions="End"
+                            VerticalOptions="Center"
+                        />
+
+                    <!--karttaki sütunları ayıran ikinci diket çizgi-->
+                    <BoxView
+                            Grid.Column="1"
+                            WidthRequest="1"
+                            HeightRequest="80"
+                            Color="#F3D6E2"
+                            HorizontalOptions="End"
+                            VerticalOptions="Center"
+                        />
+
+                </Grid>
+            </Border>
+
+            <Grid
+                ColumnDefinitions="*,Auto"
+                ColumnSpacing="10"
+                Margin="20,5,20,15">
+
+                <!--derslerin gösterildiği başlık-->
+                <Label
+                    Grid.Column="0"
+                    Text="Derslerim"
+                    TextColor="#910623"
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center" />
+
+                <!--yeni ders ekleme butonu-->
+                <Button
+                    Grid.Column="1"
+                    Text="+ Yeni Ders Ekle"
+                    TextColor="White"
+                    BackgroundColor="#EC4899"
+                    CornerRadius="15"
+                    WidthRequest="140"
+                    HorizontalOptions="End"
+                    VerticalOptions="Center"
+                    Clicked="OnYeniDersEkleClicked" />
+
+            </Grid>
+
+            <CollectionView ItemsSource="{Binding Dersler}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <!--ders durumlarının gözükeceği kart-->
+                        <Border
+                            BackgroundColor="White"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 18"
+                            Padding="14"
+                            Margin="10,6,10,6">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnDersSecildi" CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+
+                            <VerticalStackLayout Spacing="5">
+                                <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
+                                    <!--ders adının yazıldığı bölüm-->
+                                    <Label
+                                        Grid.Column="0"
+                                        Text="{Binding DersAdi}"  
+                                        FontAttributes="Bold"
+                                        FontSize="15"
+                                        TextColor="#910623"
+                                        VerticalOptions="Center" />
+
+                                    <!--durum etiketi-->
+                                    <Border
+                                        Grid.Column="1"
+                                        StrokeShape="RoundRectangle 12"
+                                        BackgroundColor="{Binding DurumArkaPlanRengi}"
+                                        StrokeThickness="0"
+                                        Padding="10,4"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Center">
+                                        <Label
+                                            Text="{Binding GuvenliMi}" 
+                                            FontAttributes="Bold"
+                                            FontSize="11"
+                                            TextColor="{Binding DurumRengi}" 
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                </Grid>
+
+                                <Grid ColumnDefinitions="*,*">
+                                    <!--kaç hafta olduğu bilgisi-->
+                                    <Label
+                                        Grid.Column="0"
+                                        Text="{Binding ToplamHafta, StringFormat='{}{0} hafta'}"
+                                        TextColor="#910623"
+                                        FontSize="10" />
+
+                                    <!--haftada kaç saat olduğu bilgisi-->
+                                    <Label
+                                        Grid.Column="1"
+                                        Text="{Binding HaftalikSaat, StringFormat='{}{0} / hafta'}"  
+                                        TextColor="#910623"
+                                        FontSize="10"  
+                                        HorizontalOptions="Start" />
+                                </Grid>
+
+                                <!--devamsızlık kullanım çubuğu ve yüzde bilgisi-->
+                                <Grid ColumnDefinitions="*,Auto"
+                                      ColumnSpacing="12"
+                                      Margin="0,4,0,0">
+                                    <ProgressBar
+                                        Grid.Column="0"
+                                        Progress="{Binding CubukDolulukOrani}"
+                                        ProgressColor="#EC4899"
+                                        BackgroundColor="#F9DFE8"
+                                        HeightRequest="8"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        Grid.Column="1"
+                                        Text="{Binding KullanimYuzdesi, StringFormat='{}{0:F0}%'}"
+                                        TextColor="#910623"
+                                        FontSize="12"
+                                        FontAttributes="Bold"
+                                        VerticalOptions="Center" />
+                                </Grid>
+
+                                <!--yapılan ve kalan devamsızlık saatleri-->
+                                <Grid ColumnDefinitions="*,Auto"
+                                      Margin="0,3,0,0">
+                                    <Label
+                                        Grid.Column="0"
+                                        Text="{Binding yapilanDevamsizlik, StringFormat='Yapılan: {0} saat'}"
+                                        TextColor="#A35A7A"
+                                        FontSize="10" />
+                                    <Label
+                                        Grid.Column="1"
+                                        Text="{Binding KalanDevamsizlikSaati, StringFormat='Kalan: {0:0.##} saat'}"
+                                        TextColor="#A35A7A"
+                                        FontSize="10" />
+                                </Grid>
+
+                                <!-- + Derse Gitmedim Butonu -->
+                                <Button
+                                    Text="+ Derse Gitmedim"
+                                    TextColor="White"
+                                    BackgroundColor="#EC4899"
+                                    FontAttributes="Bold"
+                                    FontSize="13"
+                                    CornerRadius="12"
+                                    HeightRequest="38"
+                                    Padding="0"
+                                    Margin="0,6,0,0"
+                                    HorizontalOptions="Fill"
+                                    Clicked="OnDerseGitmedimClicked"
+                                    CommandParameter="{Binding .}" />
+
+                            </VerticalStackLayout>
+                        </Border>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+
+
+</ContentPage>

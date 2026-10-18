@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DevamsizlikHakkim.DersDetayPage"
+             Title="Ders Detayı"
+             BackgroundColor="#F8BBD0"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="16" Padding="16,10,16,24">
+
+            <!-- Üst Navigasyon Çubuğu -->
+            <Grid HeightRequest="44" Margin="0,5,0,5">
+                <!-- Sayfa Başlığı (Tam Ortalanmış) -->
+                <Label Text="Ders Detayı"
+                       TextColor="#910623"
+                       FontSize="22"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+
+                <!-- Geri Dönüş Butonu (Sola Hizalı) -->
+                <Border StrokeShape="RoundRectangle 18"
+                        BackgroundColor="White"
+                        StrokeThickness="1"
+                        Stroke="#F9CFDF"
+                        WidthRequest="42"
+                        HeightRequest="42"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Center">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnGeriClicked" />
+                    </Border.GestureRecognizers>
+                    <Label Text="←"
+                           TextColor="#910623"
+                           FontSize="22"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Border>
+            </Grid>
+
+            <!-- Ders Bilgi Kartı -->
+            <Border BackgroundColor="White"
+                    StrokeThickness="1"
+                    Stroke="#F9CFDF"
+                    StrokeShape="RoundRectangle 22"
+                    Padding="20"
+                    Margin="0,5,0,5">
+
+                <VerticalStackLayout Spacing="16">
+
+                    <!-- Başlık ve Durum Etiketi -->
+                    <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
+                        <Label x:Name="DersAdiLabel"
+                               Grid.Column="0"
+                               Text="{Binding DersAdi}"
+                               TextColor="#910623"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               VerticalOptions="Center" />
+
+                        <!-- Durum Rozeti -->
+                        <Border Grid.Column="1"
+                                StrokeShape="RoundRectangle 12"
+                                BackgroundColor="{Binding DurumArkaPlanRengi}"
+                                StrokeThickness="0"
+                                Padding="10,4"
+                                HorizontalOptions="End"
+                                VerticalOptions="Center">
+                            <Label Text="{Binding GuvenliMi}"
+                                   FontAttributes="Bold"
+                                   FontSize="12"
+                                   TextColor="{Binding DurumRengi}"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                        </Border>
+                    </Grid>
+
+                    <BoxView HeightRequest="1" Color="#FCE2EC" />
+
+                    <!-- İstatistik Grid -->
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" RowSpacing="12" ColumnSpacing="12">
+                        <Border Grid.Row="0" Grid.Column="0"
+                                BackgroundColor="#FFF5F8"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="0"
+                                Padding="12,10">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Toplam Hafta" TextColor="#A35A7A" FontSize="11" />
+                                <Label Text="{Binding ToplamHafta, StringFormat='{}{0} Hafta'}"
+                                       TextColor="#910623" FontAttributes="Bold" FontSize="14" />
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border Grid.Row="0" Grid.Column="1"
+                                BackgroundColor="#FFF5F8"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="0"
+                                Padding="12,10">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Haftalık Saat" TextColor="#A35A7A" FontSize="11" />
+                                <Label Text="{Binding HaftalikSaat, StringFormat='{}{0} Saat / hf'}"
+                                       TextColor="#910623" FontAttributes="Bold" FontSize="14" />
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border Grid.Row="1" Grid.Column="0"
+                                BackgroundColor="#FFF5F8"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="0"
+                                Padding="12,10">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Devamsızlık Sınırı" TextColor="#A35A7A" FontSize="11" />
+                                <Label Text="{Binding DevamsizlikSiniri, StringFormat='%{0:F0}'}"
+                                       TextColor="#910623" FontAttributes="Bold" FontSize="14" />
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <Border Grid.Row="1" Grid.Column="1"
+                                BackgroundColor="#FFF5F8"
+                                StrokeShape="RoundRectangle 12"
+                                StrokeThickness="0"
+                                Padding="12,10">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="Toplam Hak" TextColor="#A35A7A" FontSize="11" />
+                                <Label Text="{Binding DevamsizlikHakki, StringFormat='{}{0:0.##} Saat'}"
+                                       TextColor="#910623" FontAttributes="Bold" FontSize="14" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </Grid>
+
+                    <!-- İlerleme Çubuğu ve Yüzde -->
+                    <VerticalStackLayout Spacing="6" Margin="0,4,0,0">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0" Text="Kullanım Oranı" TextColor="#A35A7A" FontSize="12" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding KullanimYuzdesi, StringFormat='{}{0:F0}%'}"
+                                   TextColor="#910623"
+                                   FontSize="13"
+                                   FontAttributes="Bold" />
+                        </Grid>
+                        <ProgressBar Progress="{Binding CubukDolulukOrani}"
+                                     ProgressColor="#EC4899"
+                                     BackgroundColor="#F9DFE8"
+                                     HeightRequest="10" />
+                        <Grid ColumnDefinitions="*,Auto" Margin="0,2,0,0">
+                            <Label Grid.Column="0"
+                                   Text="{Binding yapilanDevamsizlik, StringFormat='Yapılan: {0} saat'}"
+                                   TextColor="#A35A7A"
+                                   FontSize="11" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding KalanDevamsizlikSaati, StringFormat='Kalan: {0:0.##} saat'}"
+                                   TextColor="#A35A7A"
+                                   FontSize="11" />
+                        </Grid>
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Devamsızlık Düzenleme Kartı -->
+            <Border BackgroundColor="White"
+                    StrokeThickness="1"
+                    Stroke="#F9CFDF"
+                    StrokeShape="RoundRectangle 22"
+                    Padding="20"
+                    Margin="0,0,0,5">
+
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="Devamsızlık Saati Düzenleme"
+                           TextColor="#910623"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+
+                    <Label Text="Derse katılmadığınız saatleri arttırabilir veya yanlış girişleri azaltarak düzeltebilirsiniz."
+                           TextColor="#A35A7A"
+                           FontSize="12" />
+
+                    <!-- Artır / Azalt Sayaç Kontrolü -->
+                    <Border StrokeShape="RoundRectangle 14"
+                            Stroke="#F9CFDF"
+                            StrokeThickness="1"
+                            BackgroundColor="#FFF5F8"
+                            Padding="12,8">
+                        <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center">
+                            <!-- Eksi Butonu -->
+                            <Button Grid.Column="0"
+                                    Text="-"
+                                    TextColor="White"
+                                    BackgroundColor="#EC4899"
+                                    FontSize="20"
+                                    FontAttributes="Bold"
+                                    CornerRadius="10"
+                                    WidthRequest="46"
+                                    HeightRequest="46"
+                                    Padding="0"
+                                    Clicked="OnDevamsizlikAzaltClicked" />
+
+                            <!-- Saat Değeri -->
+                            <VerticalStackLayout Grid.Column="1"
+                                                 HorizontalOptions="Center"
+                                                 VerticalOptions="Center"
+                                                 Spacing="2">
+                                <Label x:Name="YapilanDevamsizlikLabel"
+                                       Text="{Binding yapilanDevamsizlik}"
+                                       TextColor="#910623"
+                                       FontSize="24"
+                                       FontAttributes="Bold"
+                                       HorizontalOptions="Center" />
+                                <Label Text="saat devamsızlık"
+                                       TextColor="#A35A7A"
+                                       FontSize="11"
+                                       HorizontalOptions="Center" />
+                            </VerticalStackLayout>
+
+                            <!-- Artı Butonu -->
+                            <Button Grid.Column="2"
+                                    Text="+"
+                                    TextColor="White"
+                                    BackgroundColor="#EC4899"
+                                    FontSize="20"
+                                    FontAttributes="Bold"
+                                    CornerRadius="10"
+                                    WidthRequest="46"
+                                    HeightRequest="46"
+                                    Padding="0"
+                                    Clicked="OnDevamsizlikArttirClicked" />
+                        </Grid>
+                    </Border>
+
+                    <!-- Manuel Saat Girişi -->
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <Border Grid.Column="0"
+                                StrokeShape="RoundRectangle 12"
+                                Stroke="#F9CFDF"
+                                StrokeThickness="1"
+                                BackgroundColor="#FFF5F8"
+                                Padding="12,0">
+                            <Entry x:Name="ManuelSaatEntry"
+                                   Keyboard="Numeric"
+                                   Placeholder="Doğrudan saat yazın"
+                                   PlaceholderColor="#C48E9F"
+                                   TextColor="#910623"
+                                   FontSize="13"
+                                   HeightRequest="44" />
+                        </Border>
+
+                        <Button Grid.Column="1"
+                                Text="Ayarla"
+                                TextColor="White"
+                                BackgroundColor="#EC4899"
+                                FontAttributes="Bold"
+                                FontSize="13"
+                                CornerRadius="12"
+                                HeightRequest="44"
+                                Padding="16,0"
+                                Clicked="OnManuelAyarlaClicked" />
+                    </Grid>
+
+                    <!-- Kaydet / Tamam Butonu -->
+                    <Button Text="Değişiklikleri Kaydet"
+                            TextColor="White"
+                            BackgroundColor="#229765"
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            CornerRadius="14"
+                            HeightRequest="48"
+                            Clicked="OnKaydetClicked" />
+
+                    <!-- Dersi Sil Butonu -->
+                    <Button Text="Dersi Sil"
+                            TextColor="#BF2948"
+                            BackgroundColor="#FCE0E4"
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            CornerRadius="14"
+                            HeightRequest="48"
+                            Margin="0,4,0,0"
+                            Clicked="OnDersiSilClicked" />
+
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
